@@ -3,20 +3,26 @@
 #include <vector>
 #include <QPoint>
 
-namespace Tree {
+namespace Tree
+{
 
-	Node::Node(Data NewData) {
+    Node::Node(Data NewData)
+    {
 		_data = NewData;
 	}
 
-	Node::~Node() {
+    Node::~Node()
+    {
 		delete _left;
 		delete _right;
 	}
 
-	bool Node::IsSymetrical() {
+    bool Node::IsSymetrical()
+    {
         std::vector <int> left_side;
         std::vector <int> right_side;
+        if(_left == nullptr || _right == nullptr)
+            return false;
 		_left->SymetricalChecking(left_side);
 		_right->SymetricalChecking(right_side);
 
@@ -37,7 +43,8 @@ namespace Tree {
 
 	}
 
-	void Node::SymetricalChecking(std::vector<int>& vec) {
+    void Node::SymetricalChecking(std::vector<int>& vec)
+    {
         if (_left != nullptr && _right != nullptr)
         {
             vec.push_back(0);
@@ -60,15 +67,18 @@ namespace Tree {
         }
 	}
 
-	void Node::Insert(Data NewData) {
+    void Node::Insert(Data NewData)
+    {
 		if (NewData.val < _data.val)
 		{
-			if (_left == nullptr){
+            if (_left == nullptr)
+            {
                 left_nodes++;
 				_left = new Node(NewData);
                 _left->_data.new_node = true;
 			}
-			else{
+            else
+            {
 				_left->Insert(NewData);
 			}
 
@@ -80,19 +90,23 @@ namespace Tree {
 				_right = new Node(NewData);
                 _right->_data.new_node = true;
 			}
-			else{
+            else
+            {
 				_right->Insert(NewData);
 			}
 		}
 	}
 
-    void Node::ResetLastLabel(){
-        if (_left != nullptr){
+    void Node::ResetLastLabel()
+    {
+        if (_left != nullptr)
+        {
             _left->_data.new_node = false;
             _left->ResetLastLabel();
         }
 
-        if (_right != nullptr){
+        if (_right != nullptr)
+        {
             _right->_data.new_node = false;
             _right->ResetLastLabel();
         }

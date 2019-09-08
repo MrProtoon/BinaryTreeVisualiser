@@ -4,7 +4,8 @@
 #include <QMainWindow>
 #include <tree.h>
 
-namespace Ui {
+namespace Ui
+{
 class VisualTree;
 }
 
@@ -13,7 +14,7 @@ class VisualTree : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit VisualTree(QWidget *parent = 0);
+    explicit VisualTree(QWidget *parent = nullptr);
     virtual void paintEvent(QPaintEvent *event);
     ~VisualTree();
 
@@ -22,7 +23,7 @@ private slots:
 
     void on_Root_set_clicked();
 
-    void on_pushButton_clicked();
+    //void on_pushButton_clicked();
 
 private:
     bool DrawTree{false};

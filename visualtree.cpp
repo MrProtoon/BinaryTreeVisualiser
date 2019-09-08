@@ -6,6 +6,7 @@
 #include <QPainter>
 #include <QPoint>
 #include <string>
+#include <QDebug>
 
 
 int Tree::Node::left_nodes = 0;
@@ -14,9 +15,10 @@ int Tree::Node::right_nodes = 0;
 VisualTree::VisualTree(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::VisualTree)
-    {
-        ui->setupUi(this);
-    }
+{
+    _node = new Tree::Node(Tree::Data());
+    ui->setupUi(this);
+}
 
 VisualTree::~VisualTree()
 {
@@ -28,12 +30,15 @@ void VisualTree::on_insert_button_clicked()
 {
     QString raw_data = ui->Input_text->text();
     ui->Input_text->setText("");
+    qDebug() << "raw_data" << raw_data;
 
-    if(raw_data.contains(",")){
+    if(raw_data.contains(","))
+    {
         _node->ResetLastLabel();
         QStringList split_data = raw_data.split(",");
 
-        for(const auto &a : split_data){
+        for(const auto &a : split_data)
+        {
             Tree::Data _data;
             _data.val = a.toInt();
             _node->Insert(_data);
@@ -44,10 +49,12 @@ void VisualTree::on_insert_button_clicked()
             ui->right_branch->setText(QString::number(Tree::Node::right_nodes));
         }
     }
-    else{
+    else
+    {
         Tree::Data _data;
         _data.val = raw_data.toInt();
-        if(!(_node->Contain(raw_data.toInt()))){
+        if(!(_node->Contain(raw_data.toInt())))
+        {
             _node->ResetLastLabel();
             _node->Insert(_data);
 
@@ -58,10 +65,13 @@ void VisualTree::on_insert_button_clicked()
         }
     }
 
-    if(_node->IsSymetrical()==1){
+    //here may cause some errors
+    if(_node->IsSymetrical())
+    {
         ui->symetrcal_lab->setText("Yes");
     }
-    else{
+    else
+    {
        ui->symetrcal_lab->setText("No");
     }
 
@@ -82,8 +92,10 @@ void VisualTree::on_Root_set_clicked()
     ui->Root_set->setEnabled(false);
 }
 
-void VisualTree::paintEvent(QPaintEvent *event){
-    if(DrawTree == true){
+void VisualTree::paintEvent(QPaintEvent *event)
+{
+    if(DrawTree == true)
+    {
         QPainter paint_node(this);
         paint_node.setPen(QPen(Qt::black,2));
         std::vector<Tree::Data> nodes_data = _node->SetPositionOfNodesForVisualization();
@@ -93,20 +105,24 @@ void VisualTree::paintEvent(QPaintEvent *event){
         line_pos.setX(_node->start_pos.x()+size);
         line_pos.setY(_node->start_pos.y()+size);
         std::vector<QPoint> nodes_lines = _node->GetVectorOfLinesBetwenNodes();
-        for(const auto& a : nodes_lines){
+        for(const auto& a : nodes_lines)
+        {
             paint_node.drawLine(line_pos.x(),line_pos.y(),a.x()+size,a.y()+size);
             line_pos.setX(a.x()+size);
             line_pos.setY(a.y()+size);
         }
 
         paint_node.setBrush(QBrush(QColor(Qt::green)));
-        for(const auto& a : nodes_data){
+        for(const auto& a : nodes_data)
+        {
             QPoint node_pos(a.posX,a.posY);
 
-            if(a.new_node == false){
+            if(a.new_node == false)
+            {
                 paint_node.drawEllipse(a.posX,a.posY,_node->DrawingSize,_node->DrawingSize);
             }
-            else{
+            else
+            {
                 paint_node.setBrush(QBrush(QColor(Qt::red)));
                 paint_node.drawEllipse(a.posX,a.posY,_node->DrawingSize,_node->DrawingSize);
                 paint_node.setBrush(QBrush(QColor(Qt::green)));

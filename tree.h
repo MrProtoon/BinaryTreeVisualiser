@@ -2,8 +2,10 @@
 #include <vector>
 #include <QPoint>
 
-namespace Tree {
-	struct Data {
+namespace Tree
+{
+    struct Data
+    {
 		int val;
         int level;
         int pos;
